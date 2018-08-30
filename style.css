@@ -66,6 +66,64 @@ body{
 
 
 
+/************menu.html start**************/
+
+body>p{
+    font-size: 50px;
+    text-align: center;
+}
+
+#food-menu-container{
+    width: 70%;
+    height: auto;
+    margin: 50px auto;
+    background-color: goldenrod;
+}
+
+.food-menu-item{
+    border-top: 1px black solid;
+    width: 100%;
+    height: 120px;
+    display: flex;
+}
+
+.food-menu-item > .item-picture{
+    width: 27%;
+    height: 100%;
+/*    background-color: green;*/
+}
+
+.food-menu-item > .item-picture img{
+    width: 100%;
+    height: 100%;
+/*    background-color: green;*/
+}
+
+.food-menu-item > .item-body{
+    width: 73%;
+    text-align: center;
+    font-size: 13px;
+    padding: 0 4px;
+}
+
+.food-menu-item > .item-body h3{
+    margin: 6px 0 0 0;
+}
+
+.food-menu-item > .item-body p{
+    margin: 8px 0 6px 0;
+}
+
+.food-menu-item > .item-body button{
+    background-color: orangered;
+    position: relative;
+    top: 15px;
+    border: none;
+}
+
+/************menu.html end**************/
+
+
 @media (max-width: 545px) {
     #nav > ul{
         flex-wrap: wrap;
@@ -93,5 +151,16 @@ body{
     #cover h1{
         font-size: 30px;
         margin-top: 140px;
+    }
+}
+
+@media (max-width: 445px) {
+    .food-menu-item > .item-body button{
+        top: 10px;
+        font-size: 11px;
+    }
+    
+    .food-menu-item{
+        height: 140px;
     }
 }
