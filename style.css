@@ -141,7 +141,7 @@ body>p{
     text-align: center;
 }
 
-#add-to-menu .new-item-input{
+.input{
     width: 200px;
     margin: 5px 0 20px 0;
 }
@@ -157,7 +157,7 @@ body>p{
     width: 210px;
 }
 
-#add-to-menu #new-item-submit{
+.submit-button{
     background-color: orangered;
     border: none;
     width: 200px;
@@ -221,6 +221,30 @@ body>p{
 
 /************admin-orders.html end**************/
 
+
+/************sign-in-div.html start**************/
+
+#sign-in-div{
+    width: 40%;
+    height: 400px;
+    background-color: midnightblue;
+    margin: 70px auto;
+    color: white;
+    padding-top: 20px;
+}
+
+#sign-in-div form{
+    width: 210px;
+    margin: 20px auto;
+}
+
+#sign-in-div #sign-in-email{
+    
+}
+/************sign-in-div.html end**************/
+
+
+
 @media (max-width: 545px) {
     #nav > ul{
         flex-wrap: wrap;
@@ -259,5 +283,9 @@ body>p{
     
     .food-menu-item{
         height: 140px;
+    }
+    
+    #sign-in-div{
+        width: 80%;
     }
 }
