@@ -167,6 +167,59 @@ body>p{
 /************admin-menu.html end**************/
 
 
+/************admin-orders.html start**************/
+
+#order-container{
+    width: 50%;
+    height: auto;
+    margin: 30px auto;
+    border-top: 1px black solid;
+}
+
+.order th, .order td {
+/*    padding: 0 100px 0 0;*/
+}
+.order{
+    height: auto;
+    border-bottom: 1px black solid; 
+    
+}
+.order tr{
+    margin: 0 auto;
+}
+
+.order table{
+    margin: 20px auto;
+    border-spacing: 100px 0;
+}
+.order .info{
+    font-weight: 700;
+}
+
+.order #buttons{
+    display: flex;
+    justify-content: center;
+    margin-bottom: 20px;
+}
+
+.order #buttons > button{
+    border: none;
+    margin: 0 10px;
+    font-size: 14px;
+}
+.order #buttons > #accept-order{
+    background-color: green;
+}
+
+.order #buttons > #decline-order{
+    background-color: red;
+}
+
+.order #buttons > #order-complete{
+    background-color: orange;
+}
+
+/************admin-orders.html end**************/
 
 @media (max-width: 545px) {
     #nav > ul{
