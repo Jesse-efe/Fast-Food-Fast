@@ -1,0 +1,29 @@
+{
+  "name": "fast-food-fast",
+  "version": "1.0.0",
+  "description": "Restaurant food delivery app",
+  "main": "app.js",
+  "scripts": {
+    "test": "mocha"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Jesse-efe/Fast-Food-Fast.git"
+  },
+  "author": "Jesse",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Jesse-efe/Fast-Food-Fast/issues"
+  },
+  "homepage": "https://github.com/Jesse-efe/Fast-Food-Fast#readme",
+  "dependencies": {
+    "body-parser": "^1.18.3",
+    "express": "^4.16.3"
+  },
+  "devDependencies": {
+    "chai": "^4.1.2",
+    "chai-http": "^4.2.0",
+    "eslint": "^5.5.0",
+    "mocha": "^5.2.0"
+  }
+}
