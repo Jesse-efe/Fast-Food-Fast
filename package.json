@@ -2,7 +2,7 @@
   "name": "fast-food-fast",
   "version": "1.0.0",
   "description": "Restaurant food delivery app",
-  "main": "app.js",
+  "main": "src/app.js",
   "scripts": {
     "test": "mocha",
     "build": "babel src -d lib"
