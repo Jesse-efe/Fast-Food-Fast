@@ -1,0 +1,36 @@
+{
+  "name": "fast-food-fast",
+  "version": "1.0.0",
+  "description": "Restaurant food delivery app",
+  "main": "src/app.js",
+  "scripts": {
+    "start": "npm run build && node ./dist/app.js",
+    "test": "nyc mocha ./test/appTest.js --exit",
+    "build": "babel src -d dist",
+    "coverage": "nyc report --reporter=text-lcov | coveralls"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Jesse-efe/Fast-Food-Fast.git"
+  },
+  "author": "Jesse",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Jesse-efe/Fast-Food-Fast/issues"
+  },
+  "homepage": "https://github.com/Jesse-efe/Fast-Food-Fast#readme",
+  "dependencies": {
+    "body-parser": "^1.18.3",
+    "express": "^4.16.3"
+  },
+  "devDependencies": {
+    "babel-cli": "^6.26.0",
+    "babel-preset-env": "^1.7.0",
+    "chai": "^4.1.2",
+    "chai-http": "^4.2.0",
+    "coveralls": "^3.0.2",
+    "eslint": "^5.5.0",
+    "mocha": "^5.2.0",
+    "nyc": "^5.6.0"
+  }
+}
