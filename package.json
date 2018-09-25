@@ -5,9 +5,9 @@
   "main": "src/app.js",
   "scripts": {
     "start": "npm run build && node ./dist/app.js",
-    "test": "mocha ./test/appTest.js",
+    "test": "nyc mocha ./test/appTest.js --exit",
     "build": "babel src -d dist",
-    "coverage": "nyc report --report=text-lcov | coveralls"
+    "coverage": "nyc report --reporter=text-lcov | coveralls"
   },
   "repository": {
     "type": "git",
@@ -21,7 +21,7 @@
   "homepage": "https://github.com/Jesse-efe/Fast-Food-Fast#readme",
   "dependencies": {
     "body-parser": "^1.18.3",
-    "express": "^4.16.3",
+    "express": "^4.16.3"
   },
   "devDependencies": {
     "babel-cli": "^6.26.0",
