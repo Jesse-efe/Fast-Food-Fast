@@ -12,6 +12,7 @@ route(app);
 
 app.listen(PORT, () => {
   console.log('app running on port.');
+  console.log(PORT)
 });
 
 
