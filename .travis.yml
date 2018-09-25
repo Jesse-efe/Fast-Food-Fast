@@ -1,1 +1,5 @@
-language: nodejs
+
+language: node_js
+node_js: 
+  - 8.94
+after_success: npm run coverage
