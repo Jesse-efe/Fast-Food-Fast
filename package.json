@@ -6,7 +6,7 @@
   "scripts": {
     "start": "npm run build && node ./dist/app.js",
     "test": "nyc mocha ./test/appTest.js --exit",
-    "build": "babel src -d dist",
+    "build": "node ./node_modules/babel-cli/bin/babel.js ./src -d ./dist",
     "coverage": "nyc report --reporter=text-lcov | coveralls"
   },
   "repository": {
