@@ -1,12 +1,12 @@
-const ordersController = require('./controller/ordersController.js');
+const ordersController = require('../controller/ordersController');
 
 const Router = (app) => {
-  app.get('/api/v1/orders', ordersController.getAllOrders(req, res));
-  app.get('/api/v1/orders/last', ordersController.getLastOrder(req, res));
-  app.get('/api/v1/orders/:id', ordersController.getAnOrder(req, res));
-  app.post('/api/v1/orders', ordersController.postAnOrder(req, res));
-  app.put('/api/v1/orders/:id', ordersController.updateOrderStatus(req, res));
-  app.delete('/api/v1/orders/:id', ordersController.deleteAnOrder(req, res));
+  app.get('/api/v1/orders', ordersController.getAllOrders);
+  app.get('/api/v1/orders/last', ordersController.getLastOrder);
+  app.get('/api/v1/orders/:id', ordersController.getAnOrder);
+  app.post('/api/v1/orders', ordersController.postAnOrder);
+  app.put('/api/v1/orders/:id', ordersController.updateOrderStatus);
+  app.delete('/api/v1/orders/:id', ordersController.deleteAnOrder);
 };
    
 

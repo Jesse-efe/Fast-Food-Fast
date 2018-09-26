@@ -1,4 +1,4 @@
-const orders = require('./orders.js');
+const orders = require('../orders.js');
 
 class OrdersController {
     getAllOrders(req, res) {
