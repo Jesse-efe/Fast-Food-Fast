@@ -42,9 +42,6 @@ class OrdersController {
 
   static deleteAnOrder(req, res) {
     const { params: { id: orderId } } = req;
-    if (orders[orderId] === undefined) {
-      return res.status(404).send('Invalid order Id');
-    }
     delete orders.orderId;
     return res.status(204).send('Order has been deleted');
   }
