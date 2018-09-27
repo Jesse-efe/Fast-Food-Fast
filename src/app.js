@@ -1,7 +1,9 @@
+require('dotenv').config();
 const express = require('express');
 const bodyParser = require('body-parser');
 const route = require('./routes.js');
 const PORT = process.env.PORT || 5000;
+
 
 const app = express();
 
@@ -12,8 +14,8 @@ route(app);
 
 app.listen(PORT, () => {
   console.log('app running on port.');
-  console.log("testing heroku"),
-  console.log(PORT)
+  console.log('testing heroku'),
+  console.log(PORT);
 });
 
 
