@@ -58,7 +58,7 @@ body{
 #cover-shade{
     height: 89vh;
     width: 100vw;
-    /* background-color: rgba(0, 0, 0, 0.5);     */
+    background-color: rgba(0, 0, 0, 0.363);    
     margin: 0px;
     position: absolute;
     /* opacity: 0.5; */
@@ -81,8 +81,9 @@ body{
 
 #cover p{
     color: white;
-    font-weight: 700;
+    font-weight: 500;
     font-size: 18px;
+    font-family: 
 }
 
 #cover button{
