@@ -47,14 +47,27 @@ body{
     
 }
 
+#home-container{
+    height: 89vh;
+    background:url(delicious.jpg);
+    background-repeat:no-repeat;
+    background-size:cover;
+    overflow: hidden;
+}
+
+#cover-shade{
+    height: 89vh;
+    width: 100vw;
+    background-color: rgba(0, 0, 0, 0.411);    
+    margin: 0px;
+    position: absolute;
+}
+
 #cover{
-  width:100%;
-  height:90vh;
-  background:url(cover-image.jpg);
-  background-repeat:no-repeat;
-  background-size:cover;
-  overflow: hidden;
-  background-position:center bottom;
+    margin: 150px auto;
+    max-width: 1000px;
+    height: 100px;
+    text-align: center;
 }
 
 #cover h1{
@@ -62,13 +75,29 @@ body{
     font-size: 60px;
     text-align: center;
     margin-top: 110px;
+    margin-bottom: 0px;
+}
+
+#cover p{
+    color: white;
+    font-weight: 500;
+    font-size: 18px;
+}
+
+#cover button{
+    color: white;
+    height: 50px;
+    background-color: green;
+    border: none;
+    border-radius: 5px;
+    font-size: 20px;
 }
 
 
 
 /************menu.html start**************/
 
-body>p{
+.heading{
     font-size: 50px;
     text-align: center;
 }
@@ -108,6 +137,15 @@ body>p{
     padding: 0 4px;
 }
 
+.button{
+    width: 100px;
+    height: 30px;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-size: 15px;
+}
+
 .food-menu-item > .item-body h3{
     margin: 6px 0 0 0;
 }
@@ -142,8 +180,22 @@ body>p{
 }
 
 .input{
-    width: 200px;
+    width: 300px;
     margin: 5px 0 20px 0;
+    height: 30px;
+    border-radius: 5px;
+    border: none;
+    font-size: 15px;
+    padding-left: 3px;
+}
+
+.submit-button{
+    background-color: orangered;
+    border: none;
+    border-radius: 5px;    
+    width: 300px;
+    text-align: center;
+    height: 30px;
 }
 
 #add-to-menu textarea{
@@ -155,13 +207,6 @@ body>p{
 #add-to-menu > #new-item-form{
     margin: 0 auto;
     width: 210px;
-}
-
-.submit-button{
-    background-color: orangered;
-    border: none;
-    width: 200px;
-    text-align: center;
 }
 
 /************admin-menu.html end**************/
@@ -176,9 +221,6 @@ body>p{
     border-top: 1px black solid;
 }
 
-.order th, .order td {
-/*    padding: 0 100px 0 0;*/
-}
 .order{
     height: auto;
     border-bottom: 1px black solid; 
@@ -222,29 +264,78 @@ body>p{
 /************admin-orders.html end**************/
 
 
-/************sign-in-div.html start**************/
+/************signin area start**************/
+#container{
+    height: 89vh;
+    background:url(cover-image.jpg);
+    background-repeat:no-repeat;
+    background-size:cover;
+    overflow: hidden;
+}
+
+#signin-container{
+    margin: 150px auto;
+    max-width: 1000px;
+    height: 100px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+    /* background-color: goldenrod */
+}
+
+#sign-in-text{
+    width: 500px;
+    height: 200px;
+    color: white;
+    font-weight: 100;
+    /* background-color: red; */
+    margin-right: 30px;
+}
 
 #sign-in-div{
-    width: 40%;
-    height: 400px;
-    background-color: midnightblue;
-    margin: 70px auto;
-    color: white;
-    padding-top: 20px;
+    width: auto;
+    height: 200px;
+    text-align: center;
+    /* background-color: midnightblue; */
+    color: white;  
 }
 
-#sign-in-div form{
-    width: 210px;
-    margin: 20px auto;
+#sign-in-div > form{
+    position: relative;
+    top: 20px;
 }
 
-#sign-in-div #sign-in-email{
-    
+#sign-in-div > p{
+    position: relative;
+    top: 20px;
 }
-/************sign-in-div.html end**************/
+
+/************signin area end**************/
 
 
-
+@media (max-width: 861px) {
+    #signin-container{
+        max-width: 500px;
+        margin: 75px auto;
+    }
+    #sign-in-text > h4{
+        display: none;
+    }
+    #sign-in-div > form{
+        position: relative;
+        top: -80px;
+    }
+    #sign-in-div > p{
+        position: relative;
+        top: -80px;
+    }
+    #sign-in-text{
+        width: 300px;
+        height: 200px;
+        margin: 0 0 15px 0;
+    }
+}
 @media (max-width: 545px) {
     #nav > ul{
         flex-wrap: wrap;
@@ -255,7 +346,6 @@ body>p{
         flex-basis: 100%;
         margin: auto;
         font-size: 20px;
-/*        text-align: center;*/
     }
     
     #nav > ul #logo{
@@ -287,5 +377,28 @@ body>p{
     
     #sign-in-div{
         width: 80%;
+    }
+
+    #signin-container{
+        max-width: 300px;
+        margin: 75px auto;
+    }
+    #sign-in-div > form{
+        position: relative;
+        top: -60px;
+    }
+    #sign-in-text{
+        width: 200px;
+        height: 200px;
+    }
+    #sign-in-div > p{
+        position: relative;
+        top: -50px;
+    }
+    .input{
+        width: 200px;
+    }
+    .submit-button{
+        width: 200px;
     }
 }
