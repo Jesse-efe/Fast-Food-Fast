@@ -1,7 +1,8 @@
+import express from 'express';
+import bodyParser from 'body-parser';
+import route from './routes';
+
 require('dotenv').config();
-import { express } from 'express';
-import { bodyParser } from 'body-parser';
-import { route } from './routes.js';
 
 const PORT = process.env.PORT || 5000;
 
@@ -14,9 +15,9 @@ route(app);
 
 app.listen(PORT, () => {
   console.log('app running on port.');
-  console.log("testing heroku"),
-  console.log(PORT)
+  console.log('testing heroku'),
+  console.log(PORT);
 });
 
 
-export { app };
+export default app;

@@ -1,5 +1,6 @@
-import { ordersController } from '../controller/ordersController';
-import { user } from '../controller/users';
+import express from 'express';
+import ordersController from '../controller/ordersController';
+import user from '../controller/users';
 
 
 const Router = (app) => {
@@ -13,6 +14,6 @@ const Router = (app) => {
   app.get('/api/v1/users', user.findAllUser);
   app.get('/api/v1/users/:email', user.findUser);
 };
-   
 
-export { Router };
+
+export default Router;
