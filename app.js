@@ -1,6 +1,6 @@
-const express = require('express');
-const bodyParser = require('body-parser');
-const route = require('./routes.js');
+import { express } from 'express';
+import { bodyParser } from 'body-parser';
+import { route } from './routes.js';
 
 const app = express();
 
@@ -14,4 +14,4 @@ app.listen(3000, () => {
 });
 
 
-module.exports = app;
+export { app };

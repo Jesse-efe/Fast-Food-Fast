@@ -1,5 +1,5 @@
-const orders = require('./orders.js');
-const OrdersController = require('./controller/ordersController');
+import { ordersController } from './controller/ordersController';
+import { user } from '../controller/users';
 
 const Router = (app) => {
   app.get('/api/v1/orders', OrdersController.getAllOrders);
@@ -11,4 +11,4 @@ const Router = (app) => {
 };
    
 
-module.exports = Router;
+export { Router };

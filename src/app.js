@@ -1,6 +1,8 @@
-const express = require('express');
-const bodyParser = require('body-parser');
-const route = require('./routes.js');
+require('dotenv').config();
+import { express } from 'express';
+import { bodyParser } from 'body-parser';
+import { route } from './routes.js';
+
 const PORT = process.env.PORT || 5000;
 
 const app = express();
@@ -17,4 +19,4 @@ app.listen(PORT, () => {
 });
 
 
-module.exports = app;
+export { app };

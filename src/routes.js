@@ -1,4 +1,6 @@
-const ordersController = require('../controller/ordersController');
+import { ordersController } from '../controller/ordersController';
+import { user } from '../controller/users';
+
 
 const Router = (app) => {
   app.get('/api/v1/orders', ordersController.getAllOrders);
@@ -7,7 +9,10 @@ const Router = (app) => {
   app.post('/api/v1/orders', ordersController.postAnOrder);
   app.put('/api/v1/orders/:id', ordersController.updateOrderStatus);
   app.delete('/api/v1/orders/:id', ordersController.deleteAnOrder);
+  app.post('/api/v1/users', user.signUserUp);
+  app.get('/api/v1/users', user.findAllUser);
+  app.get('/api/v1/users/:email', user.findUser);
 };
    
 
-module.exports = Router;
+export { Router };
