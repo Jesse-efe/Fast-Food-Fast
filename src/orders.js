@@ -19,4 +19,4 @@ const orders = {
 
 
 
-module.exports = orders;
+export { orders };
