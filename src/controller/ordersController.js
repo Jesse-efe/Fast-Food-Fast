@@ -1,4 +1,4 @@
-const orders = require('../orders.js');
+import orders from '../orders';
 
 class OrdersController {
   static getAllOrders(req, res) {
@@ -48,4 +48,4 @@ class OrdersController {
 }
 
 
-module.exports = OrdersController;
+export default OrdersController;

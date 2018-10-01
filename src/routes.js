@@ -1,4 +1,6 @@
-const ordersController = require('../controller/ordersController');
+import express from 'express';
+import ordersController from './controller/ordersController';
+
 
 const Router = (app) => {
   app.get('/api/v1/orders', ordersController.getAllOrders);
@@ -8,6 +10,6 @@ const Router = (app) => {
   app.put('/api/v1/orders/:id', ordersController.updateOrderStatus);
   app.delete('/api/v1/orders/:id', ordersController.deleteAnOrder);
 };
-   
 
-module.exports = Router;
+
+export default Router;

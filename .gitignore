@@ -2,3 +2,5 @@ node_modules
 .vscode
 dist
 .nyc_output
+.env
+db
