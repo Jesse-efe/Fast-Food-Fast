@@ -1,4 +1,4 @@
-import { pool } from '../db/config';
+import { pool } from '../db/config.js';
 
 class User {
   static signUserUp(req, res) {
@@ -33,4 +33,4 @@ class User {
   }
 }
 
-export default User;
+export { User };
