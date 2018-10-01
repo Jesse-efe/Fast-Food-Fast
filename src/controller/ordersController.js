@@ -1,4 +1,4 @@
-import  orders  from '../orders.js';
+import orders from '../orders';
 
 class OrdersController {
   static getAllOrders(req, res) {

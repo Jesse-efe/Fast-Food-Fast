@@ -1,6 +1,6 @@
 import express from 'express';
-import ordersController from '../controller/ordersController';
-import user from '../controller/users';
+import ordersController from './controller/ordersController';
+import user from './controller/users';
 
 
 const Router = (app) => {
