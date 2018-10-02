@@ -2,12 +2,15 @@ import pool from '../db/config';
 
 class Users {
   static signUserUp(req, res) {
-    const { body: { name } } = req;
-    const { body: { email } } = req;
-    const { body: { password } } = req;
+    const { name, email, password } = req.body;
+    const query = {
+      text: 'SELECT * FROM users WHERE email = $1',
+      values: [email],
+    };
 
-    pool.query('SELECT * FROM users WHERE email = $1', [email], (err, result) => {
+    pool.query(query, (err, result) => {
       if (err) {
+        console.log(err);
         res.status(500).json({ message: 'there was an error...please try later' });
         return;
       }
@@ -22,17 +25,21 @@ class Users {
         } else {
           res.status(200).json({ message: 'created successfully' });
         }
-        pool.end();
+        // pool.end();
       });
     });
   }
 
   static signUserIn(req, res) {
-    const { body: { email } } = req;
-    const { body: { password } } = req;
+    const { email, password } = req.body;
+    const query = {
+      text: 'SELECT * FROM users WHERE email = $1',
+      values: [email],
+    };
 
-    pool.query('SELECT * FROM users WHERE email = $1', [email], (err, result) => {
+    pool.query(query, (err, result) => {
       if (err) {
+        console.log(err, result);
         res.status(500).json({ message: 'there was an error...please try later' });
         return;
       }
@@ -46,7 +53,7 @@ class Users {
       }
       const msg = `Welcome back ${result.rows[0].name} you have signed in successfully`;
       res.status(200).json({ message: msg });
-      pool.end();
+      // pool.end();
     });
   }
 
