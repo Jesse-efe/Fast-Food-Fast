@@ -14,8 +14,6 @@ app.use(bodyParser.urlencoded({ extended: true }));
 route(app);
 
 app.listen(PORT, () => {
-  console.log('app running on port.');
-  console.log('testing heroku'),
   console.log(PORT);
 });
 
