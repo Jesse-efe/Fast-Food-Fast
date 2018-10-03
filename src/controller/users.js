@@ -2,7 +2,24 @@ import pool from '../db/config';
 
 class Users {
   static signUserUp(req, res) {
-    const { name, email, password } = req.body;
+    let { name, email, password } = req.body;
+    name = name.trim();
+    email = email.trim();
+    password = password.trim();
+
+    if (name === '' || name === undefined) {
+      res.status(400).json({ message: 'please fill in your name' });
+      return;
+    }
+    if (email === '' || email === undefined) {
+      res.status(400).json({ message: 'please fill in an email address' });
+      return;
+    }
+    if (password === '' || password === undefined) {
+      res.status(400).json({ message: 'please choose a password' });
+      return;
+    }
+
     const query = {
       text: 'SELECT * FROM users WHERE email = $1',
       values: [email],
@@ -31,7 +48,19 @@ class Users {
   }
 
   static signUserIn(req, res) {
-    const { email, password } = req.body;
+    let { email, password } = req.body;
+    email = email.trim();
+    password = password.trim();
+
+    if (email === '' || email === undefined) {
+      res.status(400).json({ message: 'please fill in an email address' });
+      return;
+    }
+    if (password === '' || password === undefined) {
+      res.status(400).json({ message: 'please fill in your password' });
+      return;
+    }
+
     const query = {
       text: 'SELECT * FROM users WHERE email = $1',
       values: [email],
