@@ -12,6 +12,8 @@ const Router = (app) => {
   app.delete('/api/v1/orders/:id', ordersController.deleteAnOrder);
   app.post('/api/v1/auth/signup', users.signUserUp);
   app.post('/api/v1/auth/signin', users.signUserIn);
+  app.get('/api/v1/users/:id/orders', users.getOrderHistory);
+
 };
 
 

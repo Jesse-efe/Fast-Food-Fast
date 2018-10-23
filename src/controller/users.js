@@ -7,15 +7,15 @@ class Users {
     email = email.trim();
     password = password.trim();
 
-    if (name === '' || name === undefined) {
+    if (name === '' || typeof (name) !== 'string') {
       res.status(400).json({ message: 'please fill in your name' });
       return;
     }
-    if (email === '' || email === undefined) {
+    if (email === '' || typeof (email) !== 'string') {
       res.status(400).json({ message: 'please fill in an email address' });
       return;
     }
-    if (password === '' || password === undefined) {
+    if (password === '' || password === null) {
       res.status(400).json({ message: 'please choose a password' });
       return;
     }
@@ -40,7 +40,7 @@ class Users {
         if (err) {
           res.status(500).json({ message: 'there was an error please try later' });
         } else {
-          res.status(200).json({ message: 'created successfully' });
+          res.status(201).json({ message: 'created successfully' });
         }
         // pool.end();
       });
@@ -68,7 +68,6 @@ class Users {
 
     pool.query(query, (err, result) => {
       if (err) {
-        console.log(err, result);
         res.status(500).json({ message: 'there was an error...please try later' });
         return;
       }
@@ -86,6 +85,26 @@ class Users {
     });
   }
 
+  static getOrderHistory(req,res) {
+    let { id } = req.params;
+    
+    const query = {
+      text: 'SELECT * FROM orders WHERE customer_id = $1',
+      values: [id],
+    };
+
+    pool.query(query, (err, result) => {
+      if (err) {
+        console.log(err);
+        return res.status(500).json({ message: 'there was an error...please try later' });
+      }
+      if (result.rowCount < 1) {
+        return res.status(400).json({ message: 'You have not ordered anything yet' });
+      }
+      return res.send(result.rows);
+    });
+  }
+  
   static notCorrectPass(truePwd, givenPwd) {
     if (truePwd !== givenPwd) {
       return true;
