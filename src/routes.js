@@ -11,7 +11,7 @@ const Router = (app) => {
   app.put('/api/v1/orders/:id', ordersController.updateOrderStatus);
   app.delete('/api/v1/orders/:id', ordersController.deleteAnOrder);
   app.post('/api/v1/auth/signup', users.signUserUp);
-  app.post('/api/v1/auth/signin', users.signUserIn);
+  app.post('/api/v1/auth/login', users.logUserIn);
   app.get('/api/v1/users/:id/orders', users.getOrderHistory);
 
 };

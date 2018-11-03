@@ -4,7 +4,7 @@ import route from './routes';
 
 require('dotenv').config();
 
-const PORT = process.env.PORT || 5000;
+//const PORT = 'process.env.PORT, process.env.IP' || 5000;
 
 const app = express();
 
@@ -13,8 +13,9 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 route(app);
 
-app.listen(PORT, () => {
-  console.log(PORT);
+app.listen(process.env.PORT, process.env.IP, () => {
+  console.log('it has started');
+  //console.log(process.env.devConnectionString);
 });
 
 
