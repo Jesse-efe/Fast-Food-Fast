@@ -1,4 +1,4 @@
-import orders from '../orders';
+// import orders from '../orders';
 import pool from '../db/config';
 
 
@@ -8,7 +8,7 @@ class OrdersController {
       if (err) {
         return res.status(500).json({ message: 'there was an error...please try later' });
       }
-    return res.status(200).json(result.rows);
+      return res.status(200).json(result.rows);
     });
   }
 
@@ -19,53 +19,106 @@ class OrdersController {
   }
 
   static getAnOrder(req, res) {
-    const { id } = req.params;
-    if (id === undefined) {
+    let { id } = req.params;
+    id = parseInt(id);
+    if (isNaN(id)) {
       return res.status(404).json({ message: 'Invalid order Id' });
     }
-    return res.status(200).json(orders[orderId]);
+    const query = {
+      text: 'SELECT * FROM orders WHERE id = $1',
+      values: [id],
+    };
+    pool.query(query, (err, result) => {
+      if (err) {
+        return res.status(500).json({ message: 'there was an error...please try later' });
+      }
+      if (result.rowCount !== 1) {
+        return res.status(404).json({ message: 'Invalid order Id' });
+      }
+      return res.status(200).json(result.rows[0]);
+    });
   }
 
   static postAnOrder(req, res) {
-    let { customer_id: customerId, menu_id: menuId, quantity: units } = req.body;
-    customerId = customerId.trim();
-    menuId = menuId.trim();
-    units = units.trim();
-
-    if (customerId === '' || customerId === null) {
-      return res.status(400).json({ message: 'customer ID is required' });
-    }
-    if (menuId === '' || menuId === null) {
-      return res.status(400).json({ message: 'please specify the item you want' });
-    }
-    if (units === '' || units === null) {
-      return res.status(400).json({ message: 'please specify the quantity' });
-    }
+    const { customerId, menuId, units } = req.body;
     const now = new Date();
     const date = now.toLocaleDateString();
 
-    pool.query('INSERT INTO orders (customer_id, menu_id, status, quantity, date) VALUES ($1, $2, $3, $4, $5)', [customerId, menuId, 'New', units, date], (err, result) => {
+    const query = {
+      text: 'INSERT INTO orders (customer_id, menu_id, status, quantity, date) VALUES ($1, $2, $3, $4, $5)',
+      values: [customerId, menuId, 'New', units, date],
+    };
+    pool.query(query, (err, result) => {
       if (err) {
         res.status(500).json({ message: 'there was an error please try later' });
       } else {
         res.status(201).json({ message: 'Thanks, we have received your order' });
       }
-      // pool.end();
     });
   }
 
-  static updateOrderStatus(req, res) {
-    const { params: { id: orderId } } = req;
-    orders[orderId].orderStatus = 'accepted';
-    return res.status(200).json({ message: 'Order status has been updated' });
+  static async updateOrderStatus(req, res) {
+    let { id: orderId } = req.params;
+    const { status } = req.body;
+    orderId = parseInt(orderId);
+    if (isNaN(orderId)) {
+      return res.status(404).json({ message: 'Invalid order Id' });
+    }
+
+    let query = {
+      text: 'SELECT * FROM orders WHERE id = $1',
+      values: [orderId],
+    };
+    try {
+      const result = await pool.query(query);
+      if (result.rowCount !== 1) {
+        return res.status(400).json({ message: 'Invalid order Id' });
+      }
+      if (result.rows[0].status === 'completed' || result.rows[0].status === 'cancelled') {
+        return res.status(400).json({ message: 'Order status cannot be updated further' });
+      }
+    } catch (err) {
+      return res.status(500).json({ message: 'there was an error...please try later' });
+    }
+
+    if (status === 'processing' || status === 'completed' || status === 'cancelled') {
+      query = {
+        text: 'UPDATE orders SET status = $1 WHERE id = $2',
+        values: [status, orderId],
+      };
+      pool.query(query, (err, result) => {
+        if (err) {
+          return res.status(500).json({ message: 'there was an error...please try later' });
+        }
+        return res.status(200).json({ message: 'Order status updated sucessfully' });
+      });
+    } else {
+      return res.status(404).json({ message: 'Invalid order status' });
+    }
   }
 
-  static deleteAnOrder(req, res) {
-    const { params: { id: orderId } } = req;
-    delete orders.orderId;
-    return res.status(204).json({ message: 'Order has been deleted' });
+  static getUserOrders(req, res) {
+    let { id } = req.params;
+    id = parseInt(id);
+    if (isNaN(id)) {
+      return res.status(404).json({ message: 'Invalid user Id' });
+    }
+
+    const query = {
+      text: 'SELECT * FROM orders WHERE customer_id = $1',
+      values: [id],
+    };
+
+    pool.query(query, (err, result) => {
+      if (err) {
+        return res.status(500).json({ message: 'there was an error...please try later' });
+      }
+      if (result.rowCount < 1) {
+        return res.status(400).json({ message: 'You have not ordered anything yet' });
+      }
+      return res.send(result.rows);
+    });
   }
 }
-
 
 export default OrdersController;

@@ -1,7 +1,7 @@
-import pool from './config.js';
+import pool from './config';
 
-const seedDb = () => {
-    let sql = `DROP TABLE IF EXISTS users CASCADE;
+const seedDb = async () => {
+  let sql = `DROP TABLE IF EXISTS users CASCADE;
     CREATE TABLE IF NOT EXISTS users
     (
        id SERIAL,
@@ -10,14 +10,14 @@ const seedDb = () => {
        password VARCHAR(50),
        PRIMARY KEY (ID)
     )`;
-    pool.query(sql, (err, res) => {
-        if(err) {
-            console.log('failed creating users table');
-            return false;
-        }
-    });
-    
-    sql = `DROP TABLE IF EXISTS orders CASCADE;
+  try {
+    await pool.query(sql);
+  } catch (err) {
+    console.log('failed creating users table');
+    return false;
+  }
+
+  sql = `DROP TABLE IF EXISTS orders CASCADE;
     CREATE TABLE IF NOT EXISTS orders
     (
        id SERIAL,
@@ -28,30 +28,29 @@ const seedDb = () => {
        date VARCHAR(18),
        PRIMARY KEY (ID)
     )`;
-    pool.query(sql, (err, res) => {
-        if(err) {
-            console.log('failed creating orders table');
-            return false;
-        }
-    });
-    
-    sql = `DROP TABLE IF EXISTS menu CASCADE;
+  try {
+    await pool.query(sql);
+  } catch (err) {
+    console.log('failed creating orders table');
+    return false;
+  }
+
+  sql = `DROP TABLE IF EXISTS menu CASCADE;
     CREATE TABLE menu
     (
        id SERIAL,
        food VARCHAR(50),
        description VARCHAR(50),
        price NUMERIC,
-       available VARCHAR(50),
+       picture VARCHAR(550),
        PRIMARY KEY (ID)
     )`;
-    pool.query(sql, (err, res) => {
-        if(err) {
-            console.log('failed creating menu table');
-        }
-    });
-}
+  try {
+    await pool.query(sql);
+  } catch (err) {
+    console.log('failed creating menu table');
+    return false;
+  }
+};
 
 export default seedDb;
-
-

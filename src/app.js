@@ -4,18 +4,33 @@ import route from './routes';
 
 require('dotenv').config();
 
-//const PORT = 'process.env.PORT, process.env.IP' || 5000;
+const PORT = process.env.PORT || 5000;
 
 const app = express();
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
-route(app);
+app.use('/api/v1', route);
+app.use((req, res, next) => {
+  const error = new Error('Not found');
+  error.status = 404;
+  next(error);
+});
 
-app.listen(process.env.PORT, process.env.IP, () => {
+app.use((err, req, res, next) => {
+  console.log('it got here');
+  res.status(err.status || 500);
+  res.json({
+    error: {
+      status: err.status,
+      message: err.message,
+    },
+  });
+});
+
+app.listen(PORT, () => {
   console.log('it has started');
-  //console.log(process.env.devConnectionString);
 });
 
 
