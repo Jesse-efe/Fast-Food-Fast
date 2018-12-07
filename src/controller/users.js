@@ -17,7 +17,6 @@ class Users {
       result = await pool.query('INSERT INTO users (name, email, password) VALUES ($1, $2, $3)', [name, email, password]);
       return res.status(201).json({ message: 'created successfully' });
     } catch (err) {
-      console.log(err);
       return res.status(500).json({ message: 'there was an error...please try later' });
     }
   }

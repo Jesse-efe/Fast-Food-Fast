@@ -10,7 +10,6 @@ import {
 const Router = express.Router();
 
 Router.get('/orders', ordersController.getAllOrders);
-Router.get('/orders/last', ordersController.getLastOrder);
 Router.get('/orders/:id', ordersController.getAnOrder);
 Router.post('/orders', checkOrderData, ordersController.postAnOrder);
 Router.put('/orders/:id', ordersController.updateOrderStatus);

@@ -92,24 +92,21 @@ export const checkOrderData = async (req, res, next) => {
     text: 'SELECT * FROM users WHERE id = $1',
     values: [customerId],
   };
-  // try {
-  //   const result = await pool.query(query);
-  //   if (result.rowCount !== 1) {
-  //     return res.status(400).json({ message: 'customer ID is not valid' });
-  //   }
-  // } catch (err) {
-  //   return res.status(500).json({ message: 'there was an error...please try later' });
-  // }
+  try {
+    const result = await pool.query(query);
+    if (result.rowCount !== 1) {
+      return res.status(400).json({ message: 'customer ID is not valid' });
+    }
+  } catch (err) {
+    return res.status(500).json({ message: 'there was an error...please try later' });
+  }
 
-  console.log('menu id is '+ menuId);
   query = {
     text: 'SELECT * FROM menu WHERE id = $1',
     values: [menuId],
   };
-  console.log(query);
   try {
     const result = await pool.query(query);
-    console.log(result.rows);
     if (result.rowCount !== 1) {
       return res.status(400).json({ message: 'menu ID is not valid' });
     }

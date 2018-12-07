@@ -6,7 +6,6 @@ class Menu {
       if (err) {
         return res.status(500).json({ message: 'there was an error...please try later' });
       }
-      console.log(result.rows);
       return res.status(200).json(result.rows);
     });
   }

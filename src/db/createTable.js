@@ -1,7 +1,7 @@
 import pool from './config';
 
 const seedDb = async () => {
-  let sql = `DROP TABLE IF EXISTS users CASCADE;
+  let sql = `DROP TABLE IF EXISTS users;
     CREATE TABLE IF NOT EXISTS users
     (
        id SERIAL,
@@ -17,7 +17,7 @@ const seedDb = async () => {
     return false;
   }
 
-  sql = `DROP TABLE IF EXISTS orders CASCADE;
+  sql = `DROP TABLE IF EXISTS orders;
     CREATE TABLE IF NOT EXISTS orders
     (
        id SERIAL,
@@ -35,7 +35,7 @@ const seedDb = async () => {
     return false;
   }
 
-  sql = `DROP TABLE IF EXISTS menu CASCADE;
+  sql = `DROP TABLE IF EXISTS menu;
     CREATE TABLE menu
     (
        id SERIAL,
@@ -47,6 +47,7 @@ const seedDb = async () => {
     )`;
   try {
     await pool.query(sql);
+    return true;
   } catch (err) {
     console.log('failed creating menu table');
     return false;

@@ -12,12 +12,6 @@ class OrdersController {
     });
   }
 
-  static getLastOrder(req, res) {
-    const ids = Object.keys(orders);
-    const lastId = parseInt(ids.pop());
-    return res.status(200).json(orders[lastId]);
-  }
-
   static getAnOrder(req, res) {
     let { id } = req.params;
     id = parseInt(id);
@@ -59,10 +53,17 @@ class OrdersController {
 
   static async updateOrderStatus(req, res) {
     let { id: orderId } = req.params;
-    const { status } = req.body;
+    let { status } = req.body;
     orderId = parseInt(orderId);
     if (isNaN(orderId)) {
-      return res.status(404).json({ message: 'Invalid order Id' });
+      return res.status(400).json({ message: 'Invalid order Id' });
+    }
+    if (status === undefined) {
+      return res.status(400).json({ message: 'order status not specified' });
+    }
+    status = status.trim();
+    if (status === '') {
+      return res.status(400).json({ message: 'order status not specified' });
     }
 
     let query = {
@@ -72,7 +73,7 @@ class OrdersController {
     try {
       const result = await pool.query(query);
       if (result.rowCount !== 1) {
-        return res.status(400).json({ message: 'Invalid order Id' });
+        return res.status(404).json({ message: 'Invalid order Id' });
       }
       if (result.rows[0].status === 'completed' || result.rows[0].status === 'cancelled') {
         return res.status(400).json({ message: 'Order status cannot be updated further' });
@@ -93,7 +94,7 @@ class OrdersController {
         return res.status(200).json({ message: 'Order status updated sucessfully' });
       });
     } else {
-      return res.status(404).json({ message: 'Invalid order status' });
+      return res.status(400).json({ message: 'Invalid order status' });
     }
   }
 
@@ -101,7 +102,7 @@ class OrdersController {
     let { id } = req.params;
     id = parseInt(id);
     if (isNaN(id)) {
-      return res.status(404).json({ message: 'Invalid user Id' });
+      return res.status(400).json({ message: 'Invalid user Id' });
     }
 
     const query = {
@@ -114,9 +115,9 @@ class OrdersController {
         return res.status(500).json({ message: 'there was an error...please try later' });
       }
       if (result.rowCount < 1) {
-        return res.status(400).json({ message: 'You have not ordered anything yet' });
+        return res.status(404).json({ message: 'You have not ordered anything yet' });
       }
-      return res.send(result.rows);
+      return res.status(200).json(result.rows);
     });
   }
 }

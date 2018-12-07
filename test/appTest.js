@@ -3,45 +3,12 @@ import chaiHttp from 'chai-http';
 import app from '../src/app';
 import seedDb from '../src/db/createTable';
 
-seedDb();
-
 const { expect } = chai;
 chai.use(chaiHttp);
 
-describe('App.js', () => {
-  
-  // describe('/api/v1/orders/:id', () => {
-  //   it('responds with status of 200', (done) => {
-  //     chai.request(app)
-  //       .get('/api/v1/orders/1')
-  //       .end((err, res) => {
-  //         expect(res).to.have.status(200);
-  //         expect(res).to.be.json;
-  //         done();
-  //       });
-  //   });
-  // });
-  // describe('resource was created', () => {
-  //   it('responds with status of 200', (done) => {
-  //     chai.request(app)
-  //       .post('/api/v1/orders')
-  //       .send({
-  //         name: 'peter', food: 'yam', price: 4, quantity: 6,
-  //       })
-  //       .then(() => {
-  //         chai.request(app)
-  //           .get('/api/v1/orders/last')
-  //           .end((err, res) => {
-  //             expect(res).to.have.status(200);
-  //             expect(res.body.customerName).to.equal('peter');
-  //             expect(res.body.foodOrdered).to.equal('yam');
-  //             expect(res.body.total).to.equal(24);
-  //             done();
-  //           });
-  //       });
-  //   });
-  // });
+//seedDb();
 
+describe('App.js', () => {
   describe('/api/v1/menu', () => {
     it('Item title should be defined', (done) => {
       chai.request(app)
@@ -479,6 +446,7 @@ describe('App.js', () => {
           menu_id: 35, quantity: 5,
         })
         .end((err, res) => {
+          expect(res).to.be.json;
           expect(res).to.have.status(400);
           expect(res.body.message).to.equal('customer Id is not specified');
           done();
@@ -492,6 +460,7 @@ describe('App.js', () => {
           customer_id: '  ', menu_id: 35, quantity: 5,
         })
         .end((err, res) => {
+          expect(res).to.be.json;
           expect(res).to.have.status(400);
           expect(res.body.message).to.equal('customer ID is not valid');
           done();
@@ -505,12 +474,13 @@ describe('App.js', () => {
           customer_id: 99, menu_id: 35,
         })
         .end((err, res) => {
+          expect(res).to.be.json;
           expect(res).to.have.status(400);
           expect(res.body.message).to.equal('quantity is not specified');
           done();
         });
     });
-    
+
     it('quantity should be specified', (done) => {
       chai.request(app)
         .post('/api/v1/orders')
@@ -518,6 +488,7 @@ describe('App.js', () => {
           customer_id: 99, menu_id: 35, quantity: '',
         })
         .end((err, res) => {
+          expect(res).to.be.json;
           expect(res).to.have.status(400);
           expect(res.body.message).to.equal('quantity is not valid');
           done();
@@ -531,6 +502,7 @@ describe('App.js', () => {
           customer_id: 99, quantity: 5,
         })
         .end((err, res) => {
+          expect(res).to.be.json;
           expect(res).to.have.status(400);
           expect(res.body.message).to.equal('menu Id is not specified');
           done();
@@ -544,6 +516,7 @@ describe('App.js', () => {
           customer_id: 99, menu_id: 'six', quantity: 5,
         })
         .end((err, res) => {
+          expect(res).to.be.json;
           expect(res).to.have.status(400);
           expect(res.body.message).to.equal('menu ID is not valid');
           done();
@@ -557,22 +530,183 @@ describe('App.js', () => {
           customer_id: 1, menu_id: 1, quantity: 5,
         })
         .end((err, res) => {
-          console.log(res.body);
+          expect(res).to.be.json;
           expect(res).to.have.status(201);
           expect(res.body.message).to.equal('Thanks, we have received your order');
           done();
         });
     }).timeout(20000);
 
-    it('responds with status of 200', (done) => {
+    it('should get all orders', (done) => {
       chai.request(app)
         .get('/api/v1/orders')
         .end((err, res) => {
-          expect(res).to.have.status(200);
           expect(res).to.be.json;
+          expect(res).to.have.status(200);
+          expect(res.body[0].id).to.equal(1);
+          expect(res.body[0].customer_id).to.equal(1);
+          expect(res.body[0].menu_id).to.equal(1);
+          expect(res.body[0].status).to.equal('New');
+          expect(res.body[0].quantity).to.equal(5);
+          done();
+        });
+    });
+
+    it('should get an order', (done) => {
+      chai.request(app)
+        .get('/api/v1/orders/one')
+        .end((err, res) => {
+          expect(res).to.be.json;
+          expect(res).to.have.status(404);
+          expect(res.body.message).to.equal('Invalid order Id');
+          done();
+        });
+    });
+
+    it('should get an order', (done) => {
+      chai.request(app)
+        .get('/api/v1/orders/45')
+        .end((err, res) => {
+          expect(res).to.be.json;
+          expect(res).to.have.status(404);
+          expect(res.body.message).to.equal('Invalid order Id');
+          done();
+        });
+    });
+
+    it('should get an order', (done) => {
+      chai.request(app)
+        .get('/api/v1/orders/1')
+        .end((err, res) => {
+          expect(res).to.be.json;
+          expect(res).to.have.status(200);
+          expect(res.body.id).to.equal(1);
+          expect(res.body.customer_id).to.equal(1);
+          expect(res.body.menu_id).to.equal(1);
+          expect(res.body.status).to.equal('New');
+          expect(res.body.quantity).to.equal(5);
+          done();
+        });
+    });
+
+    it('should update valid order ID', (done) => {
+      chai.request(app)
+        .put('/api/v1/orders/one')
+        .send({
+          status: 'verifying',
+        })
+        .end((err, res) => {
+          expect(res).to.be.json;
+          expect(res).to.have.status(400);
+          expect(res.body.message).to.equal('Invalid order Id');
+          done();
+        });
+    });
+
+    it('order status should be valid', (done) => {
+      chai.request(app)
+        .put('/api/v1/orders/45')
+        .send({
+          status: 'verifying',
+        })
+        .end((err, res) => {
+          expect(res).to.be.json;
+          expect(res).to.have.status(404);
+          expect(res.body.message).to.equal('Invalid order Id');
+          done();
+        });
+    });
+
+    it('order status should be specified', (done) => {
+      chai.request(app)
+        .put('/api/v1/orders/1')
+        .send({
+        })
+        .end((err, res) => {
+          expect(res).to.be.json;
+          expect(res).to.have.status(400);
+          expect(res.body.message).to.equal('order status not specified');
+          done();
+        });
+    });
+
+    it('order status should be valid', (done) => {
+      chai.request(app)
+        .put('/api/v1/orders/1')
+        .send({
+          status: 'verifying',
+        })
+        .end((err, res) => {
+          expect(res).to.be.json;
+          expect(res).to.have.status(400);
+          expect(res.body.message).to.equal('Invalid order status');
+          done();
+        });
+    });
+
+    it('should update order status', (done) => {
+      chai.request(app)
+        .put('/api/v1/orders/1')
+        .send({
+          status: 'cancelled',
+        })
+        .end((err, res) => {
+          expect(res).to.be.json;
+          expect(res).to.have.status(200);
+          expect(res.body.message).to.equal('Order status updated sucessfully');
+          done();
+        });
+    });
+
+    it('order status should be updateable', (done) => {
+      chai.request(app)
+        .put('/api/v1/orders/1')
+        .send({
+          status: 'cancelled',
+        })
+        .end((err, res) => {
+          expect(res).to.be.json;
+          expect(res).to.have.status(400);
+          expect(res.body.message).to.equal('Order status cannot be updated further');
+          done();
+        });
+    });
+
+    it('should get all orders of user', (done) => {
+      chai.request(app)
+        .get('/api/v1/users/one/orders/')
+        .end((err, res) => {
+          expect(res).to.be.json;
+          expect(res).to.have.status(400);
+          expect(res.body.message).to.equal('Invalid user Id');
+          done();
+        });
+    });
+
+    it('should get all orders of user', (done) => {
+      chai.request(app)
+        .get('/api/v1/users/3/orders/')
+        .end((err, res) => {
+          expect(res).to.be.json;
+          expect(res).to.have.status(404);
+          expect(res.body.message).to.equal('You have not ordered anything yet');
+          done();
+        });
+    });
+
+    it('should get all orders of user', (done) => {
+      chai.request(app)
+        .get('/api/v1/users/1/orders/')
+        .end((err, res) => {
+          expect(res).to.be.json;
+          expect(res).to.have.status(200);
+          expect(res.body[0].id).to.equal(1);
+          expect(res.body[0].customer_id).to.equal(1);
+          expect(res.body[0].menu_id).to.equal(1);
+          expect(res.body[0].status).to.equal('cancelled');
+          expect(res.body[0].quantity).to.equal(5);
           done();
         });
     });
   });
-
 });
