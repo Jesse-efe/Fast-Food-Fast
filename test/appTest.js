@@ -6,7 +6,7 @@ import seedDb from '../src/db/createTable';
 const { expect } = chai;
 chai.use(chaiHttp);
 
-//seedDb();
+seedDb();
 
 describe('App.js', () => {
   describe('/api/v1/menu', () => {
