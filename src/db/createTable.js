@@ -1,3 +1,4 @@
+import bcrypt from 'bcryptjs';
 import pool from './config';
 
 const seedDb = async () => {
@@ -7,13 +8,13 @@ const seedDb = async () => {
        id SERIAL,
        name VARCHAR(50),
        email VARCHAR(50),
-       password VARCHAR(50),
+       password VARCHAR(100),
+       isAdmin BOOL DEFAULT '0',
        PRIMARY KEY (ID)
     )`;
   try {
     await pool.query(sql);
   } catch (err) {
-    console.log('failed creating users table');
     return false;
   }
 
@@ -31,7 +32,6 @@ const seedDb = async () => {
   try {
     await pool.query(sql);
   } catch (err) {
-    console.log('failed creating orders table');
     return false;
   }
 
@@ -46,10 +46,11 @@ const seedDb = async () => {
        PRIMARY KEY (ID)
     )`;
   try {
+    const hash = await bcrypt.hash('adminpass', 5);
     await pool.query(sql);
+    await pool.query('INSERT INTO users (name, email, password, isAdmin) VALUES ($1, $2, $3, $4)', ['admin', 'email@admin.com', hash, '1']);
     return true;
   } catch (err) {
-    console.log('failed creating menu table');
     return false;
   }
 };

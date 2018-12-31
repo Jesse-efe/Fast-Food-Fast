@@ -88,20 +88,11 @@ export const checkOrderData = async (req, res, next) => {
     return res.status(400).json({ message: 'quantity is not valid' });
   }
 
-  let query = {
-    text: 'SELECT * FROM users WHERE id = $1',
-    values: [customerId],
-  };
-  try {
-    const result = await pool.query(query);
-    if (result.rowCount !== 1) {
-      return res.status(400).json({ message: 'customer ID is not valid' });
-    }
-  } catch (err) {
-    return res.status(500).json({ message: 'there was an error...please try later' });
+  if (req.userData.id !== customerId) {
+    return res.status(401).json({ message: 'Auth failed' });
   }
 
-  query = {
+  const query = {
     text: 'SELECT * FROM menu WHERE id = $1',
     values: [menuId],
   };
@@ -150,13 +141,15 @@ export const checkmenuData = (req, res, next) => {
   if (picture === '') {
     return res.status(400).json({ message: 'Item picture is not specified' });
   }
-
   price = parseInt(price.replace(/,/g, ''));
 
   if (isNaN(price)) {
     return res.status(400).json({ message: 'price is not valid' });
   }
 
+  req.body.title = title;
+  req.body.description = description;
+  req.body.picture = picture;
   req.body.price = price;
   next();
 };

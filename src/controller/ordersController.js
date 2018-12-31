@@ -4,7 +4,7 @@ import pool from '../db/config';
 
 class OrdersController {
   static getAllOrders(req, res) {
-    pool.query('SELECT * FROM orders', (err, result) => {
+    pool.query('SELECT * FROM orders INNER JOIN menu ON orders.menu_id = menu.id', (err, result) => {
       if (err) {
         return res.status(500).json({ message: 'there was an error...please try later' });
       }
@@ -19,7 +19,7 @@ class OrdersController {
       return res.status(404).json({ message: 'Invalid order Id' });
     }
     const query = {
-      text: 'SELECT * FROM orders WHERE id = $1',
+      text: 'SELECT * FROM orders INNER JOIN menu ON orders.menu_id = menu.id WHERE orders.id = $1',
       values: [id],
     };
     pool.query(query, (err, result) => {
@@ -44,10 +44,9 @@ class OrdersController {
     };
     pool.query(query, (err, result) => {
       if (err) {
-        res.status(500).json({ message: 'there was an error please try later' });
-      } else {
-        res.status(201).json({ message: 'Thanks, we have received your order' });
+        return res.status(500).json({ message: 'there was an error please try later' });
       }
+      return res.status(201).json({ message: 'Thanks, we have received your order' });
     });
   }
 
@@ -104,9 +103,12 @@ class OrdersController {
     if (isNaN(id)) {
       return res.status(400).json({ message: 'Invalid user Id' });
     }
+    if (req.userData.id !== id) {
+      return res.status(401).json({ message: 'Auth failed' });
+    }
 
     const query = {
-      text: 'SELECT * FROM orders WHERE customer_id = $1',
+      text: 'SELECT * FROM orders INNER JOIN menu ON orders.menu_id = menu.id WHERE customer_id = $1',
       values: [id],
     };
 

@@ -1,3 +1,5 @@
+import bcrypt from 'bcryptjs';
+import jwt from 'jsonwebtoken';
 import pool from '../db/config';
 
 class Users {
@@ -9,12 +11,12 @@ class Users {
     };
 
     try {
-      let result = await pool.query(query);
+      const result = await pool.query(query);
       if (result.rowCount !== 0) {
         return res.status(400).json({ message: 'You are already a rigistered user please signin' });
       }
-
-      result = await pool.query('INSERT INTO users (name, email, password) VALUES ($1, $2, $3)', [name, email, password]);
+      const hash = await bcrypt.hash(password, 5);
+      await pool.query('INSERT INTO users (name, email, password) VALUES ($1, $2, $3)', [name, email, hash]);
       return res.status(201).json({ message: 'created successfully' });
     } catch (err) {
       return res.status(500).json({ message: 'there was an error...please try later' });
@@ -31,23 +33,40 @@ class Users {
     try {
       const result = await pool.query(query);
       if (result.rowCount !== 1) {
-        return res.status(400).json({ message: 'You are not a rigistered user please signup' });
+        return res.status(401).json({ message: 'You are not a rigistered user please signup' });
       }
-      if (Users.notCorrectPass(result.rows[0].password, password)) {
-        return res.status(400).json({ message: 'Email and password do not match' });
+      const isCorrectPwd = await bcrypt.compare(password, result.rows[0].password);
+      let message;
+      let secretKey;
+      if (isCorrectPwd) {
+        message = `Welcome back ${result.rows[0].name} you have signed in successfully`;
+      } else {
+        return res.status(401).json({ message: 'Auth failed' });
       }
-      const msg = `Welcome back ${result.rows[0].name} you have signed in successfully`;
-      return res.status(200).json({ message: msg });
+      if (result.rows[0].isadmin) {
+        secretKey = process.env.adminSecretKey;
+      } else {
+        secretKey = process.env.userSecretKey;
+      }
+      const token = jwt.sign(
+        {
+          email,
+          id: result.rows[0].id,
+        }, secretKey, { expiresIn: 60 * 60 },
+      );
+      return res.status(200).json({ message, token });
     } catch (err) {
       return res.status(500).json({ message: 'there was an error...please try later' });
     }
   }
 
   static notCorrectPass(truePwd, givenPwd) {
-    if (truePwd !== givenPwd) {
-      return true;
-    }
-    return false;
+    bcrypt.compare(givenPwd, truePwd, (err, res) => {
+      if (!res) {
+        return true;
+      }
+      return false;
+    });
   }
 }
 

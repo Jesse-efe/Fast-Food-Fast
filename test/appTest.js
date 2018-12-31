@@ -9,10 +9,24 @@ chai.use(chaiHttp);
 seedDb();
 
 describe('App.js', () => {
+  let loginToken;
+  let adminToken;
+
+  before(async () => {
+    const res = await chai.request(app)
+      .post('/api/v1/auth/login')
+      .send({
+        email: 'email@admin.com',
+        password: 'adminpass',
+      });
+    adminToken = res.body.token;
+  });
+
   describe('/api/v1/menu', () => {
     it('Item title should be defined', (done) => {
       chai.request(app)
         .post('/api/v1/menu')
+        .set('Authorization', `bearer ${adminToken}`)
         .send({
           description: '',
           price: '',
@@ -29,6 +43,7 @@ describe('App.js', () => {
     it('Item title should be specified', (done) => {
       chai.request(app)
         .post('/api/v1/menu')
+        .set('Authorization', `bearer ${adminToken}`)
         .send({
           title: '',
           description: '',
@@ -46,6 +61,7 @@ describe('App.js', () => {
     it('Item description should be defined', (done) => {
       chai.request(app)
         .post('/api/v1/menu')
+        .set('Authorization', `bearer ${adminToken}`)
         .send({
           title: '',
           price: '',
@@ -62,6 +78,7 @@ describe('App.js', () => {
     it('Item description should be specified', (done) => {
       chai.request(app)
         .post('/api/v1/menu')
+        .set('Authorization', `bearer ${adminToken}`)
         .send({
           title: 'Fried fish',
           description: '',
@@ -79,6 +96,7 @@ describe('App.js', () => {
     it('Item price should be defined', (done) => {
       chai.request(app)
         .post('/api/v1/menu')
+        .set('Authorization', `bearer ${adminToken}`)
         .send({
           title: 'Fried fish',
           description: 'This is the sweetest fish on earth',
@@ -95,6 +113,7 @@ describe('App.js', () => {
     it('Item picture should be defined', (done) => {
       chai.request(app)
         .post('/api/v1/menu')
+        .set('Authorization', `bearer ${adminToken}`)
         .send({
           title: 'Fried fish',
           description: 'This is the sweetest fish on earth',
@@ -111,6 +130,7 @@ describe('App.js', () => {
     it('Item picture should be specified', (done) => {
       chai.request(app)
         .post('/api/v1/menu')
+        .set('Authorization', `bearer ${adminToken}`)
         .send({
           title: 'Fried fish',
           description: 'This is the sweetest fish on earth',
@@ -128,6 +148,7 @@ describe('App.js', () => {
     it('Item price should be numeric', (done) => {
       chai.request(app)
         .post('/api/v1/menu')
+        .set('Authorization', `bearer ${adminToken}`)
         .send({
           title: 'Fried fish',
           description: 'This is the sweetest fish on earth',
@@ -145,6 +166,7 @@ describe('App.js', () => {
     it('Item should be added to menu', (done) => {
       chai.request(app)
         .post('/api/v1/menu')
+        .set('Authorization', `bearer ${adminToken}`)
         .send({
           title: 'Fried fish',
           description: 'This is the sweetest fish on earth',
@@ -407,7 +429,7 @@ describe('App.js', () => {
         });
     });
 
-    it('should sign user in', (done) => {
+    it('should sign in a registered user', (done) => {
       chai.request(app)
         .post('/api/v1/auth/login')
         .send({
@@ -416,11 +438,26 @@ describe('App.js', () => {
         })
         .end((err, res) => {
           expect(res).to.be.json;
-          expect(res).to.have.status(400);
+          expect(res).to.have.status(401);
           expect(res.body.message).to.equal('You are not a rigistered user please signup');
           done();
         });
-    }).timeout(20000);
+    });
+
+    it('email and password should match', (done) => {
+      chai.request(app)
+        .post('/api/v1/auth/login')
+        .send({
+          email: 'maka@gmail.com',
+          password: 'bobo',
+        })
+        .end((err, res) => {
+          expect(res).to.be.json;
+          expect(res).to.have.status(401);
+          expect(res.body.message).to.equal('Auth failed');
+          done();
+        });
+    });
 
     it('should sign user in', (done) => {
       chai.request(app)
@@ -433,15 +470,31 @@ describe('App.js', () => {
           expect(res).to.be.json;
           expect(res).to.have.status(200);
           expect(res.body.message).to.equal('Welcome back bola you have signed in successfully');
+          loginToken = res.body.token;
           done();
         });
-    }).timeout(20000);
+    });
   });
 
   describe('/api/v1/orders', () => {
-    it('customer ID should be specified', (done) => {
+    it('should not place order for unauthorized user', (done) => {
       chai.request(app)
         .post('/api/v1/orders')
+        .send({
+          menu_id: 35, quantity: 5,
+        })
+        .end((err, res) => {
+          expect(res).to.be.json;
+          expect(res).to.have.status(401);
+          expect(res.body.message).to.equal('Auth failed');
+          done();
+        });
+    });
+
+    it('customer ID should be specified to place order', (done) => {
+      chai.request(app)
+        .post('/api/v1/orders')
+        .set('Authorization', `bearer ${loginToken}`)
         .send({
           menu_id: 35, quantity: 5,
         })
@@ -453,9 +506,10 @@ describe('App.js', () => {
         });
     });
 
-    it('customer ID should be specified', (done) => {
+    it('customer ID should be valid to place order', (done) => {
       chai.request(app)
         .post('/api/v1/orders')
+        .set('Authorization', `bearer ${loginToken}`)
         .send({
           customer_id: '  ', menu_id: 35, quantity: 5,
         })
@@ -467,9 +521,25 @@ describe('App.js', () => {
         });
     });
 
-    it('quantity should be specified', (done) => {
+    it('should not place order with another users id', (done) => {
       chai.request(app)
         .post('/api/v1/orders')
+        .set('Authorization', `bearer ${loginToken}`)
+        .send({
+          customer_id: 57, menu_id: 35, quantity: 5,
+        })
+        .end((err, res) => {
+          expect(res).to.be.json;
+          expect(res).to.have.status(401);
+          expect(res.body.message).to.equal('Auth failed');
+          done();
+        });
+    });
+
+    it('quantity should be specified to place order', (done) => {
+      chai.request(app)
+        .post('/api/v1/orders')
+        .set('Authorization', `bearer ${loginToken}`)
         .send({
           customer_id: 99, menu_id: 35,
         })
@@ -481,9 +551,10 @@ describe('App.js', () => {
         });
     });
 
-    it('quantity should be specified', (done) => {
+    it('quantity should be valid to place order', (done) => {
       chai.request(app)
         .post('/api/v1/orders')
+        .set('Authorization', `bearer ${loginToken}`)
         .send({
           customer_id: 99, menu_id: 35, quantity: '',
         })
@@ -495,9 +566,10 @@ describe('App.js', () => {
         });
     });
 
-    it('menu ID should be specified', (done) => {
+    it('menu ID should be specified to place order', (done) => {
       chai.request(app)
         .post('/api/v1/orders')
+        .set('Authorization', `bearer ${loginToken}`)
         .send({
           customer_id: 99, quantity: 5,
         })
@@ -509,9 +581,10 @@ describe('App.js', () => {
         });
     });
 
-    it('menu ID should be specified', (done) => {
+    it('menu ID should be valid to place order', (done) => {
       chai.request(app)
         .post('/api/v1/orders')
+        .set('Authorization', `bearer ${loginToken}`)
         .send({
           customer_id: 99, menu_id: 'six', quantity: 5,
         })
@@ -526,8 +599,9 @@ describe('App.js', () => {
     it('should sucessfully place an order', (done) => {
       chai.request(app)
         .post('/api/v1/orders')
+        .set('Authorization', `bearer ${loginToken}`)
         .send({
-          customer_id: 1, menu_id: 1, quantity: 5,
+          customer_id: 2, menu_id: 1, quantity: 5,
         })
         .end((err, res) => {
           expect(res).to.be.json;
@@ -537,14 +611,27 @@ describe('App.js', () => {
         });
     }).timeout(20000);
 
+    it('should not get all orders for non admin user', (done) => {
+      chai.request(app)
+        .get('/api/v1/orders')
+        .set('Authorization', `bearer ${loginToken}`)
+        .end((err, res) => {
+          expect(res).to.be.json;
+          expect(res).to.have.status(401);
+          expect(res.body.message).to.equal('Auth failed');
+          done();
+        });
+    });
+
     it('should get all orders', (done) => {
       chai.request(app)
         .get('/api/v1/orders')
+        .set('Authorization', `bearer ${adminToken}`)
         .end((err, res) => {
           expect(res).to.be.json;
           expect(res).to.have.status(200);
           expect(res.body[0].id).to.equal(1);
-          expect(res.body[0].customer_id).to.equal(1);
+          expect(res.body[0].customer_id).to.equal(2);
           expect(res.body[0].menu_id).to.equal(1);
           expect(res.body[0].status).to.equal('New');
           expect(res.body[0].quantity).to.equal(5);
@@ -552,9 +639,10 @@ describe('App.js', () => {
         });
     });
 
-    it('should get an order', (done) => {
+    it('should get an order with valid id', (done) => {
       chai.request(app)
         .get('/api/v1/orders/one')
+        .set('Authorization', `bearer ${adminToken}`)
         .end((err, res) => {
           expect(res).to.be.json;
           expect(res).to.have.status(404);
@@ -563,9 +651,10 @@ describe('App.js', () => {
         });
     });
 
-    it('should get an order', (done) => {
+    it('should get an order with valid id', (done) => {
       chai.request(app)
         .get('/api/v1/orders/45')
+        .set('Authorization', `bearer ${adminToken}`)
         .end((err, res) => {
           expect(res).to.be.json;
           expect(res).to.have.status(404);
@@ -577,11 +666,12 @@ describe('App.js', () => {
     it('should get an order', (done) => {
       chai.request(app)
         .get('/api/v1/orders/1')
+        .set('Authorization', `bearer ${adminToken}`)
         .end((err, res) => {
           expect(res).to.be.json;
           expect(res).to.have.status(200);
           expect(res.body.id).to.equal(1);
-          expect(res.body.customer_id).to.equal(1);
+          expect(res.body.customer_id).to.equal(2);
           expect(res.body.menu_id).to.equal(1);
           expect(res.body.status).to.equal('New');
           expect(res.body.quantity).to.equal(5);
@@ -592,6 +682,7 @@ describe('App.js', () => {
     it('should update valid order ID', (done) => {
       chai.request(app)
         .put('/api/v1/orders/one')
+        .set('Authorization', `bearer ${adminToken}`)
         .send({
           status: 'verifying',
         })
@@ -606,6 +697,7 @@ describe('App.js', () => {
     it('order status should be valid', (done) => {
       chai.request(app)
         .put('/api/v1/orders/45')
+        .set('Authorization', `bearer ${adminToken}`)
         .send({
           status: 'verifying',
         })
@@ -620,6 +712,7 @@ describe('App.js', () => {
     it('order status should be specified', (done) => {
       chai.request(app)
         .put('/api/v1/orders/1')
+        .set('Authorization', `bearer ${adminToken}`)
         .send({
         })
         .end((err, res) => {
@@ -633,6 +726,7 @@ describe('App.js', () => {
     it('order status should be valid', (done) => {
       chai.request(app)
         .put('/api/v1/orders/1')
+        .set('Authorization', `bearer ${adminToken}`)
         .send({
           status: 'verifying',
         })
@@ -647,6 +741,7 @@ describe('App.js', () => {
     it('should update order status', (done) => {
       chai.request(app)
         .put('/api/v1/orders/1')
+        .set('Authorization', `bearer ${adminToken}`)
         .send({
           status: 'cancelled',
         })
@@ -661,6 +756,7 @@ describe('App.js', () => {
     it('order status should be updateable', (done) => {
       chai.request(app)
         .put('/api/v1/orders/1')
+        .set('Authorization', `bearer ${adminToken}`)
         .send({
           status: 'cancelled',
         })
@@ -672,9 +768,21 @@ describe('App.js', () => {
         });
     });
 
-    it('should get all orders of user', (done) => {
+    it('should not get orders of an authorised user', (done) => {
       chai.request(app)
         .get('/api/v1/users/one/orders/')
+        .end((err, res) => {
+          expect(res).to.be.json;
+          expect(res).to.have.status(401);
+          expect(res.body.message).to.equal('Auth failed');
+          done();
+        });
+    });
+
+    it('should get all orders of valid user', (done) => {
+      chai.request(app)
+        .get('/api/v1/users/one/orders/')
+        .set('Authorization', `bearer ${loginToken}`)
         .end((err, res) => {
           expect(res).to.be.json;
           expect(res).to.have.status(400);
@@ -683,25 +791,27 @@ describe('App.js', () => {
         });
     });
 
-    it('should get all orders of user', (done) => {
+    it('should not get orders of another user', (done) => {
       chai.request(app)
         .get('/api/v1/users/3/orders/')
+        .set('Authorization', `bearer ${loginToken}`)
         .end((err, res) => {
           expect(res).to.be.json;
-          expect(res).to.have.status(404);
-          expect(res.body.message).to.equal('You have not ordered anything yet');
+          expect(res).to.have.status(401);
+          expect(res.body.message).to.equal('Auth failed');
           done();
         });
     });
 
     it('should get all orders of user', (done) => {
       chai.request(app)
-        .get('/api/v1/users/1/orders/')
+        .get('/api/v1/users/2/orders/')
+        .set('Authorization', `bearer ${loginToken}`)
         .end((err, res) => {
           expect(res).to.be.json;
           expect(res).to.have.status(200);
           expect(res.body[0].id).to.equal(1);
-          expect(res.body[0].customer_id).to.equal(1);
+          expect(res.body[0].customer_id).to.equal(2);
           expect(res.body[0].menu_id).to.equal(1);
           expect(res.body[0].status).to.equal('cancelled');
           expect(res.body[0].quantity).to.equal(5);
