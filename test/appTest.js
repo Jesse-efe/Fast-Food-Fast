@@ -11,7 +11,7 @@ describe('App.js', () => {
   let adminToken;
 
   before(async () => {
-    seedDb();
+    await seedDb();
     const res = await chai.request(app)
       .post('/api/v1/auth/login')
       .send({
