@@ -6,13 +6,14 @@ import seedDb from '../src/db/createTable';
 const { expect } = chai;
 chai.use(chaiHttp);
 
-seedDb();
+// seedDb();
 
 describe('App.js', () => {
   let loginToken;
   let adminToken;
 
   before(async () => {
+    await seedDb();
     const res = await chai.request(app)
       .post('/api/v1/auth/login')
       .send({
