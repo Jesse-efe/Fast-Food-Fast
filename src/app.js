@@ -11,10 +11,25 @@ const app = express();
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
-route(app);
+app.use('/api/v1', route);
+app.use((req, res, next) => {
+  const error = new Error('Not found');
+  error.status = 404;
+  next(error);
+});
+
+app.use((err, req, res, next) => {
+  res.status(err.status || 500);
+  res.json({
+    error: {
+      status: err.status,
+      message: err.message,
+    },
+  });
+});
 
 app.listen(PORT, () => {
-  console.log(PORT);
+  console.log('it has started');
 });
 
 
