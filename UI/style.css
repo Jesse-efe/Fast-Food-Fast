@@ -2,7 +2,20 @@ body{
     margin: 0;
     padding: 0;
     font-family: sans-serif;
-/*    background-color: black;*/
+}
+
+button{
+    cursor: pointer;
+}
+
+footer{
+    width: 100%;
+    height: 23px;
+    background-color: black;
+    color: white;
+    text-align: center;
+    font-size: 13px;
+    padding: 12px 0;
 }
 
 #nav{
@@ -92,6 +105,9 @@ body{
     border-radius: 5px;
     font-size: 20px;
 }
+#cover button:hover{
+    background-color: rgb(0, 4, 255);
+}
 
 
 
@@ -125,7 +141,7 @@ body{
 }
 
 .food-menu-item > .item-picture img{
-    width: 100%;
+    width: 27%;
     height: 100%;
 /*    background-color: green;*/
 }
@@ -165,13 +181,26 @@ body{
 
 
 /************admin-menu.html start**************/
-
+#add-menu{
+    height: 50px;
+    width: 200px;
+    background-color: blue;
+    font-size: 17px;
+    color: white;
+    border: none;
+    border-radius: 7px;
+    margin:10px 40px;
+    float: right;
+}
+#add-menu:hover{
+    background-color: black;
+}
 #add-to-menu{
     width: 100%;
     background-color: midnightblue;
     color: white;
     padding-top: 20px;
-    padding-bottom: 30px;
+    padding-bottom: 80px;
 }
 
 #add-to-menu > h2{
@@ -196,6 +225,7 @@ body{
     width: 300px;
     text-align: center;
     height: 30px;
+    cursor: pointer;
 }
 
 #add-to-menu textarea{
@@ -206,7 +236,7 @@ body{
 
 #add-to-menu > #new-item-form{
     margin: 0 auto;
-    width: 210px;
+    width: 307px;
 }
 
 /************admin-menu.html end**************/
@@ -249,15 +279,15 @@ body{
     margin: 0 10px;
     font-size: 14px;
 }
-.order #buttons > #accept-order{
+.accept-order{
     background-color: green;
 }
 
-.order #buttons > #decline-order{
+.decline-order{
     background-color: red;
 }
 
-.order #buttons > #order-complete{
+.order-complete{
     background-color: orange;
 }
 
@@ -281,7 +311,6 @@ body{
     align-items: center;
     justify-content: center;
     flex-wrap: wrap;
-    /* background-color: goldenrod */
 }
 
 #sign-in-text{
@@ -289,7 +318,6 @@ body{
     height: 200px;
     color: white;
     font-weight: 100;
-    /* background-color: red; */
     margin-right: 30px;
 }
 
@@ -297,7 +325,6 @@ body{
     width: auto;
     height: 200px;
     text-align: center;
-    /* background-color: midnightblue; */
     color: white;  
 }
 
@@ -313,8 +340,237 @@ body{
 
 /************signin area end**************/
 
+/************new-menu style**************/
 
+#new-container{
+    margin: 0;
+    position: relative;
+    top: -27px;
+}
+#jumbotrun{
+    height: 250px;
+    width: 100%;
+    background:url(https://www.britishairways.com/assets/images/MediaHub/Media-Database/Royalty-free-RF/Food-and-drink/First/Food_01_First_Taster_Menu_Pork_870x290.jpg);
+    background-repeat:no-repeat;
+    background-position: bottom;
+    background-size:cover;
+}
+
+#jumbotrun #text{
+    position: relative;
+    top: 80px;
+    left: 45px;
+    font-size: 20px;
+}
+#jumbotrun > #text-shade{
+    width: 100%;
+    height: 250px;
+    background-color: rgba(0, 0, 0, 0.548);
+}
+#jumbotrun #text > h1{
+    color: white;
+}
+#new-menu-items{
+    margin: 40px auto;
+    width: 90%;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+#one-food{
+    height: 300px;
+    width: 220px;
+    box-shadow: 0 3px 5px #888888;
+    margin: 0 30px 40px 0;
+}
+#admin-jumbo{
+    width: 100%;
+    padding: 30px 0;
+    background-color: lavender;
+    position: relative;
+    margin-bottom: 60px;
+}
+#admin-jumbo > p{
+    font-size: 60px;
+    display: inline;
+    margin: 0 40px;
+}
+#admin-one-food{
+    height: 360px;
+    width: 220px;
+    box-shadow: 0 3px 5px #888888;
+    margin: 0 30px 40px 0;
+}
+#admin-one-food > #one-food-pic{
+    height: 150px;
+    width: 220px;
+}
+#admin-one-food > #one-food-pic img{
+    width: 220px;
+    height: 150px;
+}
+#admin-one-food > #admin-one-food-text{
+    margin: 10px;
+}
+#admin-one-food-text > button{
+    position: relative;
+    top: -33px;
+    height: 40px;
+    width: 90px;
+    float: right;
+    background-color: green;
+    margin-right: 10px;
+    color: white;
+    font-size: 16px;
+    border-radius: 7px;
+    border: none;
+}
+#admin-one-food-text > button:hover{
+    background-color: orangered;
+}
+#one-food > #one-food-pic{
+    height: 150px;
+    width: 220px;
+}
+#one-food > #one-food-pic img{
+    width: 220px;
+    height: 150px;
+}
+#one-food > #one-food-text{
+    margin: 10px;
+}
+#one-food-text > span{
+    font-size: 12px;
+    position: relative;
+    top: -10px;
+}
+#one-food-text > button{
+    position: relative;
+    top: -53px;
+    height: 40px;
+    width: 100px;
+    float: right;
+    background-color: green;
+    color: white;
+    font-size: 16px;
+    border-radius: 7px;
+    border: none;
+}
+#one-food-text > button:hover{
+    background-color: orangered;
+}
+
+/* *******new-menu.html styles end****** */
+/************history-page**************/
+
+#jumbo{
+    width: 100%;
+    padding: 30px 0;
+    background-color: lightgrey;
+    position: relative;
+}
+#jumbo > p{
+    font-size: 60px;
+    display: inline;
+    margin: 0 40px;
+}
+#hist-container > #new-admin-buttons{
+    width: 40%;
+    margin: 0 auto;
+    text-align: center;
+}
+#hist-container > #new-admin-buttons > button{
+    height: 35px;
+    background-color: green;
+    color: white;
+    font-size: 17px;
+    border: none;
+    border-radius: 8px;
+    margin: 0 10px 0 0;
+    width: 120px;
+}
+#hist-container > #new-admin-buttons > button:hover{
+    background-color: orangered;
+}
+#hist-container{
+    width: 85%;
+    margin: 30px auto;
+}
+#hist-container hr{
+    border: 1px #F2F3F5 solid;
+}
+#hist-container > #hist-row{
+    width: 100%;
+    /* background-color: red; */
+    display: flex;
+    flex-wrap: wrap;
+}
+#hist-row > #hist-pic{
+    height: 100px;
+    width: 180px;
+    margin-right: 20px;
+}
+#hist-row > #hist-details{
+    display: flex;
+    /* background-color: blue; */
+    height: 20px;
+}
+#hist-row > button{
+    height: 40px;
+    background-color: green;
+    color: white;
+    font-size: 20px;
+    border: none;
+    border-radius: 8px;
+    margin: 28px 0 10px 15px;
+    float: right;
+}
+#hist-row > button:hover{
+    background-color: orangered
+}
+#hist-details > #detail{
+    margin-right: 50px;
+    display: inline;
+}
+#hist-row > #hist-pic img{
+    width: 180px;
+    height: 100px;
+}
+#hist-row > #title{
+    display: inline;
+}
+#hist-row > #title P{
+    margin: 0 120px 0 0px;
+    font-weight: bold;
+    color: #003845;
+    width: 150px;
+}
+.next-button{
+    background-color:grey;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    text-align: center;
+}
+
+/************history-page end**************/
+@media (max-width: 1083px) {
+    #hist-row > #title P{
+        margin: 0 70px 0 0px;
+    }
+}
+@media (max-width: 1023px) {
+    #hist-row > #hist-details{
+        width: 90%;
+    }
+    #hist-row > #hist-pic{
+        margin-bottom: 10px;
+    }
+}
 @media (max-width: 861px) {
+    #hist-row > button{
+        margin-left: 0;
+    }
     #signin-container{
         max-width: 500px;
         margin: 75px auto;
@@ -365,6 +621,11 @@ body{
     }
 }
 
+@media (max-width: 441px) {
+    #hist-row > #title P{
+        /* margin: 0 0 5px 0; */
+    }
+}
 @media (max-width: 445px) {
     .food-menu-item > .item-body button{
         top: 10px;
@@ -400,5 +661,12 @@ body{
     }
     .submit-button{
         width: 200px;
+    }
+}
+
+@media (max-width: 407px) {
+    #hist-row > button{
+        margin-top: 50px;
+        width: 100%;
     }
 }
