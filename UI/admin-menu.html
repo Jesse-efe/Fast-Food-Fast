@@ -33,13 +33,10 @@
     </div>
     
     
-    
-    
-    <!-- ------------------ -->
 
     <div id="new-container">
         <div id="new-menu-items">
-            <div id="admin-one-food">
+            <!-- <div id="admin-one-food">
                 <div id="one-food-pic">
                         <img src="https://food.fnr.sndimg.com/content/dam/images/food/fullset/2009/5/27/0/0125629_03_chicken-in-skillet_s4x3.jpg.rend.hgtvcom.826.620.suffix/1371589386937.jpeg">
                 </div>
@@ -149,7 +146,7 @@
                     <button class="good-button">Edit</button>
                     <button class="good-button">Delete</button>
                 </div>
-            </div>
+            </div> -->
         </div>
     </div>
 
@@ -161,7 +158,8 @@
     <div id="add-to-menu">
         <h2>Add new item to menu</h2>
         <div id="new-item-form">
-            <form>
+            <div id="post-order-result"></div>
+            <form id="post-order-form">
                 <label for="new-item-title">Title</label><br>
                 <input type="text" id="new-item-title" class="input"><br>
                 <label for="new-item-price">Price</label><br>
@@ -170,7 +168,8 @@
                 <input type="text" id="new-item-picture" class="input"><br>
                 <label for="new-item-description">Description</label><br>
                 <textarea id="new-item-description" class="input"></textarea><br>
-                <input tyoe="submit" class="submit-button" value="Add item">
+                <span class="loading"><img src="loading.gif"></span>
+                <input type="submit" class="submit-button" value="Add item">
             </form>
         </div>
     </div>
@@ -178,6 +177,8 @@
     <footer>
         <span>&copy  Fast Food Fast 2018</span>
     </footer>
+
+    <script src="../jsScripts/menu.js"></script>
 </body>
 
 
