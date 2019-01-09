@@ -16,8 +16,15 @@ class Users {
         return res.status(400).json({ message: 'You are already a rigistered user please signin' });
       }
       const hash = await bcrypt.hash(password, 5);
-      await pool.query('INSERT INTO users (name, email, password) VALUES ($1, $2, $3)', [name, email, hash]);
-      return res.status(201).json({ message: 'created successfully' });
+      const insertId = await pool.query('INSERT INTO users (name, email, password) VALUES ($1, $2, $3) RETURNING id', [name, email, hash]);
+      const secretKey = process.env.userSecretKey;
+      const token = jwt.sign(
+        {
+          email,
+          insertId: insertId.rows[0].id,
+        }, secretKey, { expiresIn: 60 * 60 },
+      );
+      return res.status(201).json({ message: 'created successfully', token });
     } catch (err) {
       return res.status(500).json({ message: 'there was an error...please try later' });
     }
