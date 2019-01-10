@@ -58,13 +58,14 @@ class Users {
         secretKey = process.env.userSecretKey;
         isAdmin = false;
       }
+      const id = result.rows[0].id;
       const token = jwt.sign(
         {
           email,
-          id: result.rows[0].id,
+          id,
         }, secretKey, { expiresIn: 60 * 60 },
       );
-      return res.status(200).json({ message, token, isAdmin });
+      return res.status(200).json({ message, token, isAdmin, id });
     } catch (err) {
       return res.status(500).json({ message: 'there was an error...please try later' });
     }
