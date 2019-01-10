@@ -50,6 +50,7 @@ const signInFormHandler = (e) => {
         resultDiv.style.display = 'block';
         loading.style.display = 'none';
         window.localStorage.setItem('token', data.token);
+        window.localStorage.setItem('id', data.id);
         if (data.isAdmin) {
           window.location = 'https://jesse-efe.github.io/Fast-Food-Fast/UI/admin-menu.html';
         } else {

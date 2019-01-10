@@ -29,6 +29,19 @@ footer{
     font-size: 14px;
 }
 
+#order-result{
+    width: 80%;
+    position: fixed;
+    text-align: center;
+    margin: 0 10%;
+    padding: 6px 0;
+    display: none;
+    color: black;
+    border-radius: 5px;
+    font-size: 14px;
+    z-index: 999;
+}
+
 .error-div{
     background-color: rgb(245, 135, 135); 
 }

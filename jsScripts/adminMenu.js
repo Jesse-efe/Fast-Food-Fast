@@ -92,6 +92,7 @@ const postMenuFormHandler = (e) => {
       if (success) {
         resultDiv.innerHTML = 'Success';
         resultDiv.classList.add('success-div');
+        resultDiv.classList.remove('error-div');
         resultDiv.style.display = 'block';
         loading.style.display = 'none';
         const menuObj = [];
@@ -101,6 +102,7 @@ const postMenuFormHandler = (e) => {
       } else {
         resultDiv.innerHTML = data.message;
         resultDiv.classList.add('error-div');
+        resultDiv.classList.remove('success-div');
         resultDiv.style.display = 'block';
         loading.style.display = 'none';
       }
@@ -108,6 +110,7 @@ const postMenuFormHandler = (e) => {
   } else {
     resultDiv.innerHTML = error;
     resultDiv.classList.add('error-div');
+    resultDiv.classList.remove('success-div');
     resultDiv.style.display = 'block';
   }
 };
