@@ -16,7 +16,7 @@ class Menu {
     } = req.body;
 
     const query = {
-      text: 'INSERT INTO menu (food, description, price, picture) VALUES ($1, $2, $3, $4)',
+      text: 'INSERT INTO menu (food, description, price, picture) VALUES ($1, $2, $3, $4) RETURNING id',
       values: [title, description, price, picture],
     };
     pool.query(query, (err, result) => {

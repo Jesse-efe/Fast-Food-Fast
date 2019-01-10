@@ -45,6 +45,7 @@ class Users {
       const isCorrectPwd = await bcrypt.compare(password, result.rows[0].password);
       let message;
       let secretKey;
+      let isAdmin;
       if (isCorrectPwd) {
         message = `Welcome back ${result.rows[0].name} you have signed in successfully`;
       } else {
@@ -52,8 +53,10 @@ class Users {
       }
       if (result.rows[0].isadmin) {
         secretKey = process.env.adminSecretKey;
+        isAdmin = true;
       } else {
         secretKey = process.env.userSecretKey;
+        isAdmin = false;
       }
       const token = jwt.sign(
         {
@@ -61,7 +64,7 @@ class Users {
           id: result.rows[0].id,
         }, secretKey, { expiresIn: 60 * 60 },
       );
-      return res.status(200).json({ message, token });
+      return res.status(200).json({ message, token, isAdmin });
     } catch (err) {
       return res.status(500).json({ message: 'there was an error...please try later' });
     }
