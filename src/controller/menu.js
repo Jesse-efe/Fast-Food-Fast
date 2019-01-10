@@ -23,7 +23,7 @@ class Menu {
       if (err) {
         return res.status(500).json({ message: 'there was an error please try later' });
       }
-      return res.status(201).json({ message: 'Item was sucessfully added to the menu' });
+      return res.status(201).json({ message: 'Item was sucessfully added to the menu', menuId: result.rows[0].id, });
     });
   }
 }
