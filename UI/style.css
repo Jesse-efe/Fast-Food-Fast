@@ -18,8 +18,8 @@ footer{
     padding: 12px 0;
 }
 
-#post-order-result{
-    width: 95%;
+.post-result{
+    width: 100%;
     text-align: center;
     margin: 0 0 15px 0;
     padding: 2px 0;
@@ -322,7 +322,7 @@ footer{
 /************signin area start**************/
 #container{
     height: 89vh;
-    background:url(cover-image.jpg);
+    background:url(cover.jpg);
     background-repeat:no-repeat;
     background-size:cover;
     overflow: hidden;
@@ -360,7 +360,7 @@ footer{
 
 #sign-in-div > p{
     position: relative;
-    top: 20px;
+    margin-top: 30px;
 }
 
 /************signin area end**************/
@@ -616,6 +616,10 @@ footer{
         height: 200px;
         margin: 0 0 15px 0;
     }
+    .post-result{
+        position: relative;
+        top: -80px;
+    }
 }
 @media (max-width: 545px) {
     #nav > ul{
@@ -667,7 +671,7 @@ footer{
 
     #signin-container{
         max-width: 300px;
-        margin: 75px auto;
+        margin: 35px auto;
     }
     #sign-in-div > form{
         position: relative;

@@ -1,5 +1,5 @@
 const address = 'https://fast-food-fast-jes.herokuapp.com/api/v1/menu';
-const order = document.getElementById('post-order-form');
+const menu = document.getElementById('post-menu-form');
 
 const getMenu = () => {
   fetch(address)
@@ -10,25 +10,10 @@ const getMenu = () => {
     });
 };
 
-// const postMenuItem = (menuItem) => {
-//   fetch(address, {
-//     method: 'POST',
-//     body: JSON.stringify(menuItem),
-//     headers: {
-//       'Content-Type': 'application/json',
-//     },
-//   }).then((res) => {
-//     if (res.ok) {
-//       return 'Success';
-//     }
-//     return res.json();
-//   }).then(data => data.message);
-// };
-
 const postMenuFormHandler = (e) => {
   e.preventDefault();
   let error = '';
-  const resultDiv = document.getElementById('post-order-result');
+  const resultDiv = document.querySelector('.post-result');
   const loading = document.querySelector('.loading>img');
   resultDiv.style.display = 'none';
   const title = document.getElementById('new-item-title').value.trim();
@@ -97,4 +82,4 @@ const postMenuFormHandler = (e) => {
 };
 // getMenu();
 
-order.onsubmit = postMenuFormHandler;
+menu.onsubmit = postMenuFormHandler;
