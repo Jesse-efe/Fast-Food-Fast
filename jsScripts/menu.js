@@ -49,7 +49,6 @@ function postOrder() {
     }
     return res.json();
   }).then((data) => {
-    console.log(data);
     if (success) {
       resultDiv.innerHTML = 'Order was placed successfully.  See your <a href="https://jesse-efe.github.io/Fast-Food-Fast/UI/order-history.html">Order history</a>';
       resultDiv.classList.add('success-div');

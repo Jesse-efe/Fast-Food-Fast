@@ -553,6 +553,12 @@ footer{
     /* background-color: blue; */
     height: 20px;
 }
+
+#hist-row #order-status{
+    font-size: 14px;
+    font-style: italic;
+}
+
 #hist-row > button{
     height: 40px;
     background-color: green;
