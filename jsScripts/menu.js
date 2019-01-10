@@ -1,5 +1,26 @@
 const address = 'https://fast-food-fast-jes.herokuapp.com/api/v1/menu';
 const menu = document.getElementById('post-menu-form');
+const menuConainer = document.getElementById('new-menu-items');
+
+const createMenuTemplate = (menuObject) => {
+  let template = '';
+  menuObject.forEach((element) => {
+    template += `<div id="admin-one-food">
+    <div id="one-food-pic">
+            <img src="${element.picture}">
+    </div>
+    <div id="admin-one-food-text">
+        <h3>${element.title}</h3>
+        <span>${element.description}</span>
+        <h3>&#8358;${element.price}</h3>
+        <br />
+        <button class="good-button">Edit</button>
+        <button class="good-button">Delete</button>
+    </div>
+    </div>`;
+  });
+  return template;
+};
 
 const getMenu = () => {
   fetch(address)
@@ -53,26 +74,35 @@ const postMenuFormHandler = (e) => {
       description,
     };
     loading.style.display = 'block';
+    let success = false;
+    const token = window.localStorage.getItem('token');
     fetch(address, {
       method: 'POST',
       body: JSON.stringify(item),
       headers: {
         'Content-Type': 'application/json',
+        Authorization: `bearer ${token}`,
       },
     }).then((res) => {
       if (res.ok) {
-        console.log('good');
+        success = true;
+      }
+      return res.json();
+    }).then((data) => {
+      if (success) {
         resultDiv.innerHTML = 'Success';
         resultDiv.classList.add('success-div');
         resultDiv.style.display = 'block';
         loading.style.display = 'none';
+        const menuObj = { item };
+        const template = createMenuTemplate(menuObj);
+        menuConainer.insertBefore(template, menuConainer.firstChild);
+      } else {
+        resultDiv.innerHTML = data.message;
+        resultDiv.classList.add('error-div');
+        resultDiv.style.display = 'block';
+        loading.style.display = 'none';
       }
-      return res.json();
-    }).then((data) => {
-      resultDiv.innerHTML = data.message;
-      resultDiv.classList.add('error-div');
-      resultDiv.style.display = 'block';
-      loading.style.display = 'none';
     });
   } else {
     resultDiv.innerHTML = error;
