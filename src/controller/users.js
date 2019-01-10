@@ -16,8 +16,16 @@ class Users {
         return res.status(400).json({ message: 'You are already a rigistered user please signin' });
       }
       const hash = await bcrypt.hash(password, 5);
-      await pool.query('INSERT INTO users (name, email, password) VALUES ($1, $2, $3)', [name, email, hash]);
-      return res.status(201).json({ message: 'created successfully' });
+      const insertId = await pool.query('INSERT INTO users (name, email, password) VALUES ($1, $2, $3) RETURNING id', [name, email, hash]);
+      const secretKey = process.env.userSecretKey;
+      const id = insertId.rows[0].id;
+      const token = jwt.sign(
+        {
+          email,
+          id,
+        }, secretKey, { expiresIn: 60 * 60 },
+      );
+      return res.status(201).json({ message: 'created successfully', token, id });
     } catch (err) {
       return res.status(500).json({ message: 'there was an error...please try later' });
     }
@@ -38,6 +46,7 @@ class Users {
       const isCorrectPwd = await bcrypt.compare(password, result.rows[0].password);
       let message;
       let secretKey;
+      let isAdmin;
       if (isCorrectPwd) {
         message = `Welcome back ${result.rows[0].name} you have signed in successfully`;
       } else {
@@ -45,16 +54,19 @@ class Users {
       }
       if (result.rows[0].isadmin) {
         secretKey = process.env.adminSecretKey;
+        isAdmin = true;
       } else {
         secretKey = process.env.userSecretKey;
+        isAdmin = false;
       }
+      const id = result.rows[0].id;
       const token = jwt.sign(
         {
           email,
-          id: result.rows[0].id,
+          id,
         }, secretKey, { expiresIn: 60 * 60 },
       );
-      return res.status(200).json({ message, token });
+      return res.status(200).json({ message, token, isAdmin, id });
     } catch (err) {
       return res.status(500).json({ message: 'there was an error...please try later' });
     }
