@@ -7,13 +7,17 @@ const createMenuTemplate = (menuArray) => {
   menuArray.forEach((element) => {
     template += `<div id="admin-one-food">
     <div id="one-food-pic">
-            <img src="${element.picture}">
+      <img src="${element.picture}">
     </div>
     <div id="admin-one-food-text">
+      <div id="food-describe">
         <h3>${element.food}</h3>
         <span>${element.description}</span>
+      </div>
+      <div id="price-button">
         <h3>&#8358;${element.price}</h3>
         <button class="good-button" data-id="${element.id}">Order Now</button>
+      </div>
     </div>
     </div>`;
   });

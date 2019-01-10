@@ -187,7 +187,7 @@ const getHistory = () => {
         hist[i].onclick = completeOrder;
       }
     } else if (data.message === 'Auth failed') {
-      resultDiv.innerHTML = 'Please login as admin all orders';
+      resultDiv.innerHTML = 'Please login as admin to see all orders';
       resultDiv.classList.add('error-div');
       resultDiv.style.display = 'block';
       setInterval(() => {
