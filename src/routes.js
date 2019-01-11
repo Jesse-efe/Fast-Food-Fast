@@ -1,47 +1,25 @@
-const orders = require('./orders.js');
+import express from 'express';
+import ordersController from './controller/ordersController';
+import users from './controller/users';
+import menu from './controller/menu';
+import isLoggedIn from './middlewares/isLoggedIn';
+import isAdmin from './middlewares/isAdmin';
+import {
+  checkLoginData, checkSignupData, checkOrderData, checkmenuData,
+} from './middlewares/validations';
 
-const Router = (app) => {
-  app.get('/api/v1/orders', (req, res) => {
-    res.status(200).json(orders);
-  });
-  app.get('/api/v1/orders/last', (req, res) => {
-    let ids = Object.keys(orders);
-    let lastId = parseInt(ids.pop());
-    res.status(200).json(orders[lastId]);
-  });
-  app.get('/api/v1/orders/:id', (req, res) => {
-    const { params: { id: orderId } } = req;
-    if(orders[orderId] == undefined){
-      res.status(404).end();
-    }else{
-      res.status(200).json(orders[orderId]);
-    }
-  });
-  app.post('/api/v1/orders', (req, res) => {
-    let ids = Object.keys(orders);
-    let lastId = parseInt(ids.pop());
-    let newId = lastId + 1;
-    orders[newId] = {
-      customerName: req.body.name,
-      foodOrdered: req.body.food,
-      price: req.body.price,
-      quantity: req.body.quantity,
-      total: req.body.price * req.body.quantity,
-      orderStatus: 'unresolved',
-    };
-    res.status(201).end();
-  });
-  app.put('/api/v1/orders/:id', (req, res) => {
-    const { params: { id: orderId } } = req;
-    orders[orderId].orderStatus = 'accepted';
-    res.status(200);
-  });
-  app.delete('/api/v1/orders/:id', (req, res) => {
-    const { params: { id: orderId } } = req;
-    delete orders.orderId;
-    res.status(204).json(orders[orderId]);
-  });
-};
-   
 
-module.exports = Router;
+const Router = express.Router();
+
+Router.get('/orders', isAdmin, ordersController.getAllOrders);
+Router.get('/orders/:id', isAdmin, ordersController.getAnOrder);
+Router.post('/orders', isLoggedIn, checkOrderData, ordersController.postAnOrder);
+Router.put('/orders/:id', isAdmin, ordersController.updateOrderStatus);
+Router.post('/auth/signup', checkSignupData, users.signUserUp);
+Router.post('/auth/login', checkLoginData, users.logUserIn);
+Router.get('/users/:id/orders', isLoggedIn, ordersController.getUserOrders);
+Router.get('/menu', menu.getMenu);
+Router.post('/menu', isAdmin, checkmenuData, menu.insertMenu);
+
+
+export default Router;

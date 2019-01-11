@@ -1,0 +1,8 @@
+package-lock.json
+node_modules
+.vscode
+dist
+.nyc_output
+.env
+.c9
+.git
