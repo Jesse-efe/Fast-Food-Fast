@@ -10,12 +10,14 @@ const createMenuTemplate = (menuArray) => {
             <img src="${element.picture}">
     </div>
     <div id="admin-one-food-text">
+      <div id="food-describe">
         <h3>${element.food}</h3>
         <span>${element.description}</span>
+      </div>
+      <div id="price-button">
         <h3>&#8358;${element.price}</h3>
-        <br />
-        <button class="good-button">Edit</button>
         <button class="good-button">Delete</button>
+      </div>
     </div>
     </div>`;
   });
