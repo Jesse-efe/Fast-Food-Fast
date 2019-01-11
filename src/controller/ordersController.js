@@ -4,7 +4,7 @@ import pool from '../db/config';
 
 class OrdersController {
   static getAllOrders(req, res) {
-    pool.query('SELECT * FROM orders INNER JOIN menu ON orders.menu_id = menu.id', (err, result) => {
+    pool.query('SELECT * FROM menu INNER JOIN orders ON menu.id = orders.menu_id', (err, result) => {
       if (err) {
         return res.status(500).json({ message: 'there was an error...please try later' });
       }
